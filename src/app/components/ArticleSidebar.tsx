@@ -3,20 +3,12 @@ import Link from "next/link";
 import SideEditButton from "./SideEditButton";
 import DeleteButton from "./DeleteButton";
 import { revalidatePath } from "next/cache";
+import { getContents } from "../actions";
 
 type ArticleNavigationProps = { id: string };
 
 const ArticleNavigation = async ({ id }: ArticleNavigationProps) => {
-  type Article = {
-    id: number;
-    title: string;
-  };
-
-  const res = await fetch("http://localhost:3000/content");
-  if (res.status !== 200) {
-    console.log("エラーが発生しました");
-  }
-  const articleList = (await res.json()) as Article[];
+  const articleList = await getContents();
 
   const deleteArticle = async (id: string) => {
     "use server";
